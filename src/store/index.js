@@ -60,17 +60,17 @@ export default new Vuex.Store({
     // ##### API CALLS #####
     // ### ACCOUNT ###
     async register(unused, user) {
-      await axios.post("http://webdev.talos.net.nz/web701_sj/server/api/users/register", user);
+      await axios.post("https://webdev.talos.net.nz/web701_sj/server/api/users/register", user);
       await this.dispatch("login", user);
     },
     async login({ commit }, user) {
-      let jwt = (await axios.post("http://webdev.talos.net.nz/web701_sj/server/api/users/login", user)).data;
+      let jwt = (await axios.post("https://webdev.talos.net.nz/web701_sj/server/api/users/login", user)).data;
       commit("setToken", jwt);
       this.dispatch("getAccount");
     },
     async getAccount({ commit }) {
       const endpoint = await axios.get(
-        "http://webdev.talos.net.nz/web701_sj/server/api/users/account",
+        "https://webdev.talos.net.nz/web701_sj/server/api/users/account",
         {
           headers: { authorization: localStorage.getItem("jwt") },
         }
@@ -79,7 +79,7 @@ export default new Vuex.Store({
     },
     async getMember({ commit }) {
       const endpoint = await axios.get(
-        "http://webdev.talos.net.nz/web701_sj/server/api/member",
+        "https://webdev.talos.net.nz/web701_sj/server/api/member",
         {
           headers: { authorization: localStorage.getItem("jwt") },
         }
@@ -87,59 +87,59 @@ export default new Vuex.Store({
       commit("setMemberDetails", endpoint.data);
     },
     async putAccount(unsued, user) {
-      axios.put("http://webdev.talos.net.nz/web701_sj/server/api/users/account/update", user);
+      axios.put("https://webdev.talos.net.nz/web701_sj/server/api/users/account/update", user);
     },
 
     // ### GET ALL ###
     async getEvents({ commit }) {
-      const endpoint = await axios.get("http://webdev.talos.net.nz/web701_sj/server/api/events");
+      const endpoint = await axios.get("https://webdev.talos.net.nz/web701_sj/server/api/events");
       var events = endpoint.data;
       commit("refreshEvents", events);
     },
     async getItems({ commit }) {
-      const endpoint = await axios.get("http://webdev.talos.net.nz/web701_sj/server/api/items");
+      const endpoint = await axios.get("https://webdev.talos.net.nz/web701_sj/server/api/items");
       var items = endpoint.data;
       commit("refreshItems", items);
     },
     async getMembers({ commit }) {
-      const endpoint = await axios.get("http://webdev.talos.net.nz/web701_sj/server/api/members");
+      const endpoint = await axios.get("https://webdev.talos.net.nz/web701_sj/server/api/members");
       var members = endpoint.data;
       commit("refreshMembers", members);
     },
     async getBids({commit}, id) {
-      const endpoint = await axios.get("http://webdev.talos.net.nz/web701_sj/server/api/bids/" + id);
+      const endpoint = await axios.get("https://webdev.talos.net.nz/web701_sj/server/api/bids/" + id);
       var itemBids = endpoint.data;
       commit("refreshItemBids", itemBids);
     },
     // ### POST ###
     async postNewEvent(unused, data) {
-      await axios.post("http://webdev.talos.net.nz/web701_sj/server/event", data, { headers: { authorization: localStorage.getItem("jwt") }});
+      await axios.post("https://webdev.talos.net.nz/web701_sj/server/event", data, { headers: { authorization: localStorage.getItem("jwt") }});
       this.dispatch("getEvents");
     },
     async postNewItem(unused, data) {
-      await axios.post("http://webdev.talos.net.nz/web701_sj/server/api/item", data, { headers: { authorization: localStorage.getItem("jwt") }});
+      await axios.post("https://webdev.talos.net.nz/web701_sj/server/api/item", data, { headers: { authorization: localStorage.getItem("jwt") }});
       this.dispatch("getItems");
     },
     async postBid(unused, bid) {
-      await axios.post("http://webdev.talos.net.nz/web701_sj/server/api/bid", bid, { headers: { authorization: localStorage.getItem("jwt") }});
+      await axios.post("https://webdev.talos.net.nz/web701_sj/server/api/bid", bid, { headers: { authorization: localStorage.getItem("jwt") }});
     },
     // ### PUT ###
     async putItem(unsued, item) {
       item.active = false;
-      axios.put("http://webdev.talos.net.nz/web701_sj/server/api/item", item);
+      axios.put("https://webdev.talos.net.nz/web701_sj/server/api/item", item);
       this.dispatch("getItems");
     },
     async putMember(unsued, member) {
-      await axios.put("http://webdev.talos.net.nz/web701_sj/server/api/member", member, { headers: { authorization: localStorage.getItem("jwt") }});
+      await axios.put("https://webdev.talos.net.nz/web701_sj/server/api/member", member, { headers: { authorization: localStorage.getItem("jwt") }});
       this.dispatch("getMembers");
     },
     // ### DELETE ###
     async deleteEvent(unused, id) {
-      await axios.delete("http://webdev.talos.net.nz/web701_sj/server/api/event/" + id);
+      await axios.delete("https://webdev.talos.net.nz/web701_sj/server/api/event/" + id);
       this.dispatch("getEvents");
     },
     async deleteItem(unused, id) {
-      await axios.delete("http://webdev.talos.net.nz/web701_sj/server/api/item/" + id);
+      await axios.delete("https://webdev.talos.net.nz/web701_sj/server/api/item/" + id);
     },
     // ##### STORE MANIPULATIN #####
     // ### SET INDEX ###
