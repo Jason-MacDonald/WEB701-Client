@@ -1,4 +1,4 @@
-'use strict';
+
 
 // ##### PUSH EVENT HANDLER #####
 self.addEventListener('push', function(event) {
