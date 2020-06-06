@@ -89,7 +89,14 @@ export default new Vuex.Store({
     async putAccount(unsued, user) {
       axios.put("https://webdev.talos.net.nz/web701_sj/server/api/users/account/update", user);
     },
-
+    // ##### PUSH NOTIFICATION SUBSCRIPTION #####
+    async savePushSubscription(unused, pushSubscription) {
+      let PushSubscription = (JSON.stringify(pushSubscription));
+      axios.put("https://webdev.talos.net.nz/web701_sj/server/api/users/account/subscribe", PushSubscription, { headers: { "Content-Type": "application/json", authorization: localStorage.getItem("jwt") }});
+    },
+    async triggerPush() {
+      axios.post("https://webdev.talos.net.nz/web701_sj/server/api/users/trigger-push");
+    },
     // ### GET ALL ###
     async getEvents({ commit }) {
       const endpoint = await axios.get("https://webdev.talos.net.nz/web701_sj/server/api/events");

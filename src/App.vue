@@ -35,15 +35,22 @@
         </v-btn>
       </div>
     </v-app-bar>
-    <br />
-    <br />
-    <br />
+
+<p>Space</p>
+<p>Space</p>
+<p>Space</p>
+<p>Space</p>
+<p>Space</p>
+<p>Space</p>
 
     <div :v-if="buttonEnabled == true">
       <v-btn @click="subscription">
         {{pushButtonText}}
       </v-btn>
     </div>
+    <v-btn @click="triggerPush">
+        Get Subscriptions
+    </v-btn>
 
     <router-view />end
   </v-app>
@@ -79,6 +86,11 @@ export default {
       var storage = window.localStorage;
       storage.clear();
     },
+
+
+
+
+    
     subscription (){
       if(this.isSubscribed){
         alert("unsubscribing");
@@ -90,15 +102,21 @@ export default {
         this.subscribeUser();
       }
     },
+    triggerPush () {
+      alert("Getting Subscriptions.");
+      this.$store.dispatch("triggerPush");
+    },
     subscribeUser() {
       let _this = this;
       const applicationServerPublicKey = this.urlB64ToUint8Array('BKpP09O0gtV3MIlztTaGgzLFw5M69UXuHzwqjhZL3QpxsaQDUP2z_GJllH8L7NKWNeUUlYGmD0Oyu2NfKxcAacI');
+      //const applicationServerPublicKey = 'BKpP09O0gtV3MIlztTaGgzLFw5M69UXuHzwqjhZL3QpxsaQDUP2z_GJllH8L7NKWNeUUlYGmD0Oyu2NfKxcAacI';
       this.swRegistration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: applicationServerPublicKey
       })
       .then(function(subscription) {
         console.log("User is subscribed");
+        console.log(subscription);
         _this.updateSubscriptionOnServer(subscription);
         _this.isSubscribed = true;
         _this.buttonEnabled = true;
@@ -126,8 +144,8 @@ export default {
         _this.pushButtonText = 'Enable Push Messaging';
       })
     },
-    updateSubscriptionOnServer(a) {
-      console.log(a);
+    updateSubscriptionOnServer(subscription) {
+      this.$store.dispatch("savePushSubscription", subscription);
     },
     serviceWorker() {
       //let isSubscribed = false;

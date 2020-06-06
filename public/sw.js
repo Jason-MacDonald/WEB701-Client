@@ -1,17 +1,26 @@
-
-
-// ##### PUSH EVENT HANDLER #####
 self.addEventListener('push', function(event) {
   console.log('[Service Worker] Push Received.');
-  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
   
+  let data;
+
+  if (event.data) {
+    console.log('This push event has data: ', event.data.json());
+    data = event.data.json().notification;
+  } else {
+    console.log('This push event has no data.');
+  }
+  
+  console.log(data.title);
+
   // Test content displayed in notification.
-  const title = 'Push Codelab';
+  const title = data.title;
   const options = {
-    body: 'Yay it works.',
-    icon: 'images/icon.png',
-    badge: 'images/badge.png'
+    body: data.body,
+    //icon: 'images/icon.png',
+    //badge: 'images/badge.png'
   };
+
+  console.log("data");
 
   event.waitUntil(self.registration.showNotification(title, options));
 });
