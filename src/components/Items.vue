@@ -1,35 +1,41 @@
 <template>
   <v-container>
     <v-card class="px-4 pt-4 pb-3">
+      <div class="pt-4 d-flex flex-wrap justify-center">
+        <!-- ##### GALLERY OF ITEMS ##### -->
+        <div v-for="(item, index) in this.$store.state.items" :key="index">
+          <!-- Pagination calculation -->
+          <div v-if="index < page * perPage && index >= page * perPage - perPage">
+            <v-card class="px-4 mb-4 py-1 pt-3 mx-4" width="330px" >
+              <v-img
+              src="https://picsum.photos/230/165?random"
+              width="100%"
+              height="165px"
+              class="grey darken-4"
+            ></v-img>
 
-      <!-- ##### GALLERY OF ITEMS ##### -->
-      <div v-for="(item, index) in this.$store.state.items" :key="index">
-        <!-- Pagination calculation -->
-        <div v-if="index < page * perPage && index >= page * perPage - perPage">
-          <v-card class="px-4 mb-4 py-1">
+              <!-- ##### ITEM TITLE ##### -->
+              <h2 class="px-2 pt-1">
+                {{item.name}}
+              </h2>
 
-            <!-- ##### ITEM TITLE ##### -->
-            <h2 class="px-2 pt-1">
-              {{item.name}}
-            </h2>
+              <!-- ##### ITEM DESCRIPTION ##### -->
+              <p class="px-2 pb-1">
+                {{item.description}}
+              </p>
 
-            <!-- ##### ITEM DESCRIPTION ##### -->
-            <p class="px-2 pb-1">
-              {{item.description}}
-            </p>
+              <!-- ##### SEE MORE BUTTON ##### -->
+              <div class="px-2 pb-4">
+                <v-btn @click="setSelectedItemIndex(index)">
+                    See More
+                </v-btn>
+              </div>
 
-            <!-- ##### SEE MORE BUTTON ##### -->
-            <div class="px-2 pb-4">
-              <v-btn @click="setSelectedItemIndex(index)">
-                  See More
-              </v-btn>
-            </div>
-
-          </v-card>
+            </v-card>
+          </div>
+          
         </div>
-        
       </div>
-
       <!-- ##### PAGINATION #####  -->
       <div class="text-center">
         <v-pagination v-model="page" total-visible="10" :length="Math.ceil(this.$store.state.items.length / perPage)" />
@@ -45,7 +51,7 @@ export default {
   data() {
     return {
       page: 1,
-      perPage: 5
+      perPage: 6
     }
   },
   created() {

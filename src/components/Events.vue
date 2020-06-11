@@ -1,48 +1,56 @@
 <template>
   <v-container>
-    <v-card class="px-4 pt-4 pb-3">
-
+    <v-card >
+      <div class="px-4 pt-4 pb-3 d-flex flex-wrap justify-center">
       <!-- ##### GALLERY OF EVENTS ##### -->    
-      <div v-for="(event, index) in this.$store.state.events" :key="index">
-        <!-- Pagination calculation -->
-        <div v-if="index < page * perPage && index >= page * perPage - perPage">
-          <v-card class="px-4 mb-4 py-1">
+        <div v-for="(event, index) in this.$store.state.events" :key="index">
+          <!-- Pagination calculation -->
+          <div v-if="index < page * perPage && index >= page * perPage - perPage">
+           
+            <v-card class="px-4 mb-4 py-1 pt-3 mx-4" width="330px">
+              <v-img
+              src="https://picsum.photos/230/165?random"
+              width="100%"
+              height="165px"
+              class="grey darken-4"
+            ></v-img>
 
-            <!-- ##### EVENT TITLE ##### -->
-            <h2 class="px-2 pt-1">
-              {{ event.name }}
-            </h2>
+              <!-- ##### EVENT TITLE ##### -->
+              <h2 class="px-2 pt-1">
+                {{ event.name }}
+              </h2>
 
-            <!-- ##### EVENT DESCRIPTION ##### -->
-            <p class="px-2 pb-1">
-              {{ event.description }}
-            </p>
+              <!-- ##### EVENT DESCRIPTION ##### -->
+              <p class="px-2 pb-1">
+                {{ event.description }}
+              </p>
 
-            <!-- formatDate and formatTime located in main.js -->
-            <!-- ##### EVENT START DATE DISPLAY ##### -->         
-            <p class="px-2 pb-1">
-              {{ event.startDate | formatDate }}
-            </p>
+              <!-- formatDate and formatTime located in main.js -->
+              <!-- ##### EVENT START DATE DISPLAY ##### -->         
+              <p class="px-2 pb-1">
+                {{ event.startDate | formatDate }}
+              </p>
 
-            <!-- ##### STARTDATE AND ENDDATE DISPLAY ##### -->
-            <p class="px-2 pb-1">
-              {{ event.startDate | formatTime }} - {{ event.endDate | formatTime }}
-            </p>
+              <!-- ##### STARTDATE AND ENDDATE DISPLAY ##### -->
+              <p class="px-2 pb-1">
+                {{ event.startDate | formatTime }} - {{ event.endDate | formatTime }}
+              </p>
 
-            <!-- ##### SEE MORE BUTTON ##### -->
-            <div class="px-2 pb-4">
-              <v-btn @click="setSelectedEventIndex(index)">
-                  See More
-              </v-btn>
-            </div>
-          
-          </v-card>
+              <!-- ##### SEE MORE BUTTON ##### -->
+              <div class="px-2 pb-4">
+                <v-btn @click="setSelectedEventIndex(index)">
+                    See More
+                </v-btn>
+              </div>
+            
+            </v-card>
+          </div>
         </div>
       </div>
 
       <!-- ##### PAGINATION #####  -->
       <div class="text-center">
-        <v-pagination v-model="page" total-visible="10" :length="Math.ceil(this.$store.state.events.length / perPage)" />
+        <v-pagination class="pb-3" v-model="page" total-visible="10" :length="Math.ceil(this.$store.state.events.length / perPage)" />
       </div>
 
     </v-card>
@@ -55,7 +63,7 @@ export default {
     data() {
     return {
       page: 1,
-      perPage: 5
+      perPage: 8
     }
   },
   created() {

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app color="white">
       <router-link class="mx-3" style="text-decoration: none; color: inherit;" to="/">
         <h2>NGC Nelson Galleries Collective</h2>
       </router-link>
@@ -36,23 +36,27 @@
       </div>
     </v-app-bar>
 
-<p>Space</p>
-<p>Space</p>
-<p>Space</p>
-<p>Space</p>
-<p>Space</p>
-<p>Space</p>
-
-    <div :v-if="buttonEnabled == true">
-      <v-btn @click="subscription">
-        {{pushButtonText}}
-      </v-btn>
+    
+    
+    <div class="mt-10">
+      <router-view class="mt-10"/>
     </div>
-    <v-btn @click="triggerPush">
-        Get Subscriptions
-    </v-btn>
 
-    <router-view />end
+    <v-card class="px-4 pt-4 pb-3">
+      <div class="mt-2">
+        <h2>Development Panel</h2>
+        <div class="d-flex justify-center" :v-if="buttonEnabled == true">
+          <v-btn @click="subscription">
+            {{pushButtonText}}
+          </v-btn>
+          <v-btn @click="triggerPush">
+            Get Subscriptions
+          </v-btn>
+        </div>
+      </div>
+    </v-card>
+
+
   </v-app>
 </template>
 
