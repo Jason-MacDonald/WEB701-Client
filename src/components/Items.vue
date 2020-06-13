@@ -1,16 +1,18 @@
 <template>
   <v-container>
+
     <v-card class="px-4 pt-4 pb-3">
-      <div class="pt-4 d-flex flex-wrap justify-center">
+      <div class="d-flex flex-wrap justify-center">
         <!-- ##### GALLERY OF ITEMS ##### -->
         <div v-for="(item, index) in this.$store.state.items" :key="index">
           <!-- Pagination calculation -->
           <div v-if="index < page * perPage && index >= page * perPage - perPage">
-            <v-card class="px-4 mb-4 py-1 pt-3 mx-4" width="330px" >
+            <v-card class="px-4 mb-4 py-1 pt-3 mx-4 d-flex flex-column" width="330px" height="370px">
               <v-img
               src="https://picsum.photos/230/165?random"
               width="100%"
               height="165px"
+              max-height="165"
               class="grey darken-4"
             ></v-img>
 
@@ -21,12 +23,14 @@
 
               <!-- ##### ITEM DESCRIPTION ##### -->
               <p class="px-2 pb-1">
-                {{item.description}}
+                {{item.description.substring(0, 80)}}...
               </p>
+
+              <v-spacer/>
 
               <!-- ##### SEE MORE BUTTON ##### -->
               <div class="px-2 pb-4">
-                <v-btn @click="setSelectedItemIndex(index)">
+                <v-btn color="primary" @click="setSelectedItemIndex(index)">
                     See More
                 </v-btn>
               </div>

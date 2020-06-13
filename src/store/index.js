@@ -120,7 +120,7 @@ export default new Vuex.Store({
     },
     // ### POST ###
     async postNewEvent(unused, data) {
-      await axios.post("https://webdev.talos.net.nz/web701_sj/server/event", data, { headers: { authorization: localStorage.getItem("jwt") }});
+      await axios.post("https://webdev.talos.net.nz/web701_sj/server/api/event", data, { headers: { authorization: localStorage.getItem("jwt") }});
       this.dispatch("getEvents");
     },
     async postNewItem(unused, data) {

@@ -7,11 +7,12 @@
           <!-- Pagination calculation -->
           <div v-if="index < page * perPage && index >= page * perPage - perPage">
 
-            <v-card class="px-4 mb-4 py-1 pt-3 mx-4" width="330px" >
+            <v-card class="px-4 mb-4 py-1 pt-3 mx-4 d-flex flex-column" width="330px" height="380" >
             <v-img
               src="https://picsum.photos/230/165?random"
               width="100%"
               height="165px"
+              max-height="165px"
               class="grey darken-4"
             ></v-img>
 
@@ -22,12 +23,13 @@
 
               <!-- ##### MEMBER DESCRIPTION ##### -->
               <p class="px-2 pb-1" >
-                {{member.description}}
+                {{member.description.substring(0,80)}}...
               </p>
 
+              <v-spacer/>
 
               <div class="px-2 pb-4">
-                <v-btn @click="setSelectedMemberIndex(index)">
+                <v-btn color="primary" @click="setSelectedMemberIndex(index)">
                     See More
                 </v-btn>
               </div>

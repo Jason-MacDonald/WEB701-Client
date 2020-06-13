@@ -1,17 +1,20 @@
 <template>
   <v-container>
     <v-card >
+      <!-- Container to hold gallery of events. -->
       <div class="px-4 pt-4 pb-3 d-flex flex-wrap justify-center">
+
       <!-- ##### GALLERY OF EVENTS ##### -->    
         <div v-for="(event, index) in this.$store.state.events" :key="index">
           <!-- Pagination calculation -->
           <div v-if="index < page * perPage && index >= page * perPage - perPage">
            
-            <v-card class="px-4 mb-4 py-1 pt-3 mx-4" width="330px">
+            <v-card class="px-4 mb-4 py-1 pt-3 mx-4 d-flex flex-column" width="330px" height="430">
               <v-img
               src="https://picsum.photos/230/165?random"
               width="100%"
-              height="165px"
+              height="165"
+              max-height="165"
               class="grey darken-4"
             ></v-img>
 
@@ -22,23 +25,27 @@
 
               <!-- ##### EVENT DESCRIPTION ##### -->
               <p class="px-2 pb-1">
-                {{ event.description }}
+                {{ event.description.substring(0,80) }}...
               </p>
+
+              <v-spacer/>
 
               <!-- formatDate and formatTime located in main.js -->
               <!-- ##### EVENT START DATE DISPLAY ##### -->         
-              <p class="px-2">
+              <div class="px-2">
                 {{ event.startDate | formatDate }}
-              </p>
+              </div>
 
               <!-- ##### STARTDATE AND ENDDATE DISPLAY ##### -->
               <p class="px-2 pb-1">
                 {{ event.startDate | formatTime }} - {{ event.endDate | formatTime }}
               </p>
 
+              
+
               <!-- ##### SEE MORE BUTTON ##### -->
               <div class="px-2 pb-4">
-                <v-btn @click="setSelectedEventIndex(index)">
+                <v-btn color="primary" @click="setSelectedEventIndex(index)">
                     See More
                 </v-btn>
               </div>
@@ -73,8 +80,7 @@ export default {
     catch(ex) {
       console.log("Error EVS001: " + ex.message);
       alert("Error EVS001: The system was unable to get event information.")
-    }
-    
+    }  
   },
   methods: {
     setSelectedEventIndex(index) {

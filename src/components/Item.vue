@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card class="px-4 pt-4 pb-5">
+    <v-card class="px-4 pb-5">
 
         <!-- ##### CAROUSEL ##### -->
         <v-carousel class="pt-4 mb-4">
@@ -56,17 +56,6 @@
             <v-radio label="North Island" value="north" />
             <v-radio label="International" value="international" />
           </v-radio-group>
-
-        
-
-        <!-- ##### DIMENSIONS AND FREIGHT INFORMATION ##### -->
-        <!-- Width: {{item.width}} <br/>
-        Height: {{item.height}}<br/>
-        Length: {{item.length}}<br/>
-        Weight: {{item.weight}}<br/>
-        Fragility: {{item.fragility}}<br/>
-        Zone: {{item.zone}}<br/>
-        freightCost: {{item.freightCost}}<br/> -->
       </v-card>
 
       <!-- ##### BIDDING FORM ##### -->
@@ -100,7 +89,7 @@
             
             <!-- ##### SUBMIT BID BUTTON ##### -->
             <div class="px-2 pb-4">
-              <v-btn @click="submitBid">Submit Bid</v-btn>
+              <v-btn color="primary" @click="submitBid">Submit Bid</v-btn>
             </div>
 
           </v-form>

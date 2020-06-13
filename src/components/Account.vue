@@ -16,7 +16,7 @@
         </div>
         
         <!-- ##### UPDATE USERNAEME BUTTON -->
-        <v-btn class="px-2 pt-1" @click="updateUserName">
+        <v-btn color="primary" class="px-2 pt-1" @click="updateUserName">
             Update Username
         </v-btn>
 
@@ -40,7 +40,7 @@
           </div>
           
           <!-- ##### UPDATE USERNAEME BUTTON -->
-          <v-btn class="px-2 pt-1 mb-4" @click="updateMemberDescription">
+          <v-btn color="primary" class="px-2 pt-1 mb-4" @click="updateMemberDescription">
               Update Description
           </v-btn>
           

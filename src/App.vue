@@ -1,39 +1,96 @@
 <template>
   <v-app>
+
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+      <v-list nav dense>
+        <v-list-item-group active-class="deep-purple--text text--accent-4">
+
+          <v-list-item> 
+            <v-list-item-title>
+              <router-link style="text-decoration: none; color: inherit;" to="/events">
+                Events
+              </router-link>
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-title>
+              <router-link style="text-decoration: none; color: inherit;" to="/members">
+                <v-list-item-title>Members</v-list-item-title>
+              </router-link>
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-title>
+              <router-link style="text-decoration: none; color: inherit;" to="/items">
+                <v-list-item-title>Items</v-list-item-title>
+              </router-link>
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="this.$store.state.token == null">
+            <v-list-item-title>
+              <router-link style="text-decoration: none; color: inherit;" to="/login">
+                <v-list-item-title>Login</v-list-item-title>
+              </router-link>
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="this.$store.state.token != null">
+            <v-list-item-title>
+              <router-link style="text-decoration: none; color: inherit;" to="/account">
+                <v-list-item-title>Account</v-list-item-title>
+              </router-link>
+            </v-list-item-title>
+          </v-list-item>
+
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+
+
+
     <v-app-bar app color="white">
+      <v-app-bar-nav-icon class="ml-2" @click="drawer = true"></v-app-bar-nav-icon>
+
       <router-link class="mx-3" style="text-decoration: none; color: inherit;" to="/">
-        <h2>NGC Nelson Galleries Collective</h2>
+        <h2>NGC <span class="d-none d-lg-inline">Nelson Galleries Collective</span></h2>
       </router-link>
 
       <v-spacer></v-spacer>
-
-      <router-link class="mx-3" style="text-decoration: none; color: inherit;" to="/events">
+      
+      <router-link class="mx-3 d-none d-sm-inline" style="text-decoration: none; color: inherit;" to="/events">
         <h3>Events</h3>
       </router-link>
-      <router-link class="mx-3" style="text-decoration: none; color: inherit;" to="/members">
+
+      <router-link class="mx-3 d-none d-sm-inline" style="text-decoration: none; color: inherit;" to="/members">
         <h3>Members</h3>
       </router-link>
-      <router-link class="mx-3" style="text-decoration: none; color: inherit;" to="/items">
+
+      <router-link class="mx-3 d-none d-sm-inline" style="text-decoration: none; color: inherit;" to="/items">
         <h3>Items</h3>
       </router-link>
-
       
 
-      <div class="mx-3" v-if="this.$store.state.token == null">
+      <div class="mx-3 d-none d-sm-inline" v-if="this.$store.state.token == null">
         <router-link class="mx-3" style="text-decoration: none; color: inherit;" to="/login">
           <h3>Login</h3>
         </router-link>
       </div>
-      <div class="mx-3" v-if="this.$store.state.token != null">
+
+      <div class="mx-3 d-none d-sm-inline" v-if="this.$store.state.token != null">
         <router-link style="text-decoration: none; color: inherit;" to="/account">
           <h3>Account</h3>
         </router-link>
       </div>
+
       <div class="mx-3" v-if="this.$store.state.token != null">
         <v-btn style="text-decoration: none; color: inherit;" @click="logout()">
-          <h3>Logout</h3>
+          <v-icon>mdi-logout</v-icon>
         </v-btn>
       </div>
+
     </v-app-bar>
 
     
@@ -76,7 +133,7 @@
           <v-btn @click="triggerPush">
             Get Subscriptions
           </v-btn>
-          
+
         </div>
       </div>
     </v-card>
@@ -90,6 +147,7 @@ export default {
   name: "App",
   data: () => ({
     loggedIn: false,
+    drawer: false,
 
     swRegistration: "",
     pushButtonText: "Push Messaging Not Available",

@@ -1,11 +1,14 @@
 <template>
   <v-container>
+
     <v-card class="pa-4">
       <v-form>
+
+        <!-- ##### SIMPLE INPUTS ##### -->
         <v-text-field label="Event Title" v-model="name" />
         <v-textarea label="Event Description" v-model="description" />
 
-        <!-- ##### Start Date ##### -->
+        <!-- ##### START DATE PICKER ##### -->
         <div>
           <v-dialog
             ref="dialogStartDate"
@@ -31,7 +34,7 @@
           </v-dialog>
         </div>
 
-        <!-- ##### Start Time ##### -->
+        <!-- ##### START TIME PICKER ##### -->
         <v-dialog ref="dialogStartTime" v-model="modalStartTime" :return-value.sync="startTime">
           <template v-slot:activator="{ on }">
             <v-text-field
@@ -49,7 +52,7 @@
           </v-time-picker>
         </v-dialog>
 
-        <!-- ##### End Date ##### -->
+        <!-- ##### END DATE PICKER ##### -->
         <div>
           <v-dialog
             ref="dialogEndDate"
@@ -75,7 +78,7 @@
           </v-dialog>
         </div>
 
-        <!-- ##### End Time ##### -->
+        <!-- ##### END TIME PICKER ##### -->
         <v-dialog ref="dialogEndTime" v-model="modalEndTime" :return-value.sync="endTime">
           <template v-slot:activator="{ on }">
             <v-text-field
@@ -93,16 +96,21 @@
           </v-time-picker>
         </v-dialog>
 
-        <v-btn @click="submitNewEvent">Submit Event</v-btn>
+        <!-- ##### SUBMIT NEW EVENT BUTTON ##### -->
+        <v-btn color="primary" @click="submitNewEvent">
+          Submit Event
+        </v-btn>
+
       </v-form>
     </v-card>
+
   </v-container>
 </template>
 
 <script>
 export default {
   name: "NewEvent",
-  data: () => ({
+  data: () => ({ // Models data from inputs.
     name: "",
     description: "",
     // Picker variables.
@@ -116,16 +124,45 @@ export default {
     modalEndTime: false
   }),
   methods: {
-    submitNewEvent() {
-      let event = {
-        name: this.name,
-        description: this.description,
-        startDate: this.startDate + " " + this.startTime,
-        endDate: this.endDate + " " + this.endTime,
-        email: null
-      };
-      this.$store.dispatch("postNewEvent", event);
-      this.$router.push("/events");
+    async submitNewEvent() {
+      if(this.validEvent()){
+        let event = { // Creates an event object to be inserted into database.
+          name: this.name,
+          description: this.description,
+          startDate: this.startDate + " " + this.startTime,
+          endDate: this.endDate + " " + this.endTime,
+          email: null // Will be assigned using jwt token authentucation.
+        };
+        try {
+          await this.$store.dispatch("postNewEvent", event); // Sends event object to store to be inserted into database.
+          this.emptyForm(); // Empties the form inputs.
+          this.$router.push("/events"); // Navigates to the Events page.     
+        }
+        catch (ex){
+          alert("Error NEV001: Unable to submit new event.");
+        }
+      } 
+      else {
+        alert("Error NEV002: The information you have entered has invalid details.");
+      }      
+    },
+    // TODO: Further validation required.
+    validEvent() { // Checks if the New Event information is valid.
+      if(this.name == "")
+        return false;
+      if(this.description == "")
+        return false;
+      if(this.startDate == null)
+        return false;
+      if(this.startTime == null)
+        return false;
+      if(this.endDate == null)
+        return false;
+      if(this.endTime == null)
+        return false;
+      return true;
+    },
+    emptyForm () { // Empties the form inputs.
       this.name = "";
       this.description = "";
       this.startDate = null;

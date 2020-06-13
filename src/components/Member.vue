@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card class="px-4 py-4">
-      <v-card class="px-4 pt-4 pb-1">
+      <v-card class="px-4 pb-1">
 
         <!-- ##### CAROUSEL ##### -->
         <v-carousel class="pt-4 mb-4">
