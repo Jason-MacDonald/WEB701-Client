@@ -42,16 +42,41 @@
       <router-view class="mt-10"/>
     </div>
 
+    <!-- ##### FOOTER ##### -->
+    <v-footer>
+      <v-card
+        flat
+        tile
+        width="100%"
+        class="grey darken-3 lighten-1 text-center"
+      >
+        <v-card-text>
+          <router-link class="mx-3" style="text-decoration: none; color: inherit;" to="/">
+            <v-icon size="24px">mdi-home</v-icon>
+          </router-link>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-text class="white--text">
+          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+        </v-card-text>
+      </v-card>
+    </v-footer>
+
     <v-card class="px-4 pt-4 pb-3">
       <div class="mt-2">
         <h2>Development Panel</h2>
         <div class="d-flex justify-center" :v-if="buttonEnabled == true">
+
           <v-btn @click="subscription">
             {{pushButtonText}}
           </v-btn>
+
           <v-btn @click="triggerPush">
             Get Subscriptions
           </v-btn>
+          
         </div>
       </div>
     </v-card>

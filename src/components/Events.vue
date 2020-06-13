@@ -27,7 +27,7 @@
 
               <!-- formatDate and formatTime located in main.js -->
               <!-- ##### EVENT START DATE DISPLAY ##### -->         
-              <p class="px-2 pb-1">
+              <p class="px-2">
                 {{ event.startDate | formatDate }}
               </p>
 

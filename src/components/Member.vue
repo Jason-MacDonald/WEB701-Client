@@ -3,6 +3,17 @@
     <v-card class="px-4 py-4">
       <v-card class="px-4 pt-4 pb-1">
 
+        <!-- ##### CAROUSEL ##### -->
+        <v-carousel class="pt-4 mb-4">
+          <v-carousel-item
+            v-for="(item,i) in items"
+            :key="i"
+            :src="item.src"
+            reverse-transition="fade-transition"
+            transition="fade-transition"
+          ></v-carousel-item>
+        </v-carousel>
+        
         <!-- ##### MEMBER TITLE ##### -->
         <h2 class="px-2 pt-1">
           {{ this.$store.state.members[this.$store.state.selectedMemberIndex].name }}
@@ -23,6 +34,12 @@ export default {
   name: "Member",
   data: () => ({
     member: {},
+    items: [
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',},
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',},
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',},
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',},
+    ],
   }),
   created() {
     try{

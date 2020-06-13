@@ -1,33 +1,58 @@
 <template>
   <v-container>
     <v-card class="px-4 pt-4 pb-1">
-      <v-card class="px-4 mb-4 py-1">
-        
-        <!-- ##### EVENT TITLE ##### -->
-        <h2 class="px-2 pt-1">
-          {{ event.name }}
-        </h2>
-        
-        <!-- ##### EVENT DESCRIPTION ##### -->
-        <p class="px-2 pb-1">
-          {{ event.description }}
-        </p>
-        
-        <!-- ##### EVENT DATE ##### -->
-        <p class="px-2 pb-1">
-          {{ event.startDate | formatDate }}
-        </p>
-        
-        <!-- ##### EVENT START AND END TIME ##### -->
-        <p class="px-2 pb-1">
-          {{ event.startDate | formatTime }} -
-          {{ event.endDate | formatTime }}
-        </p>
+      <v-card class="px-4 mb-4 pb-1">
 
-        <!-- ##### EVENT CREATOR EMAIL DISPLAY ##### -->
-        <p class="px-2 pb-1 mt-n3"> 
-          {{event.email}}
-        </p>
+        <!-- ##### CAROUSEL ##### -->
+        <v-carousel class="pt-4 mb-4">
+          <v-carousel-item
+            v-for="(item,i) in items"
+            :key="i"
+            :src="item.src"
+            reverse-transition="fade-transition"
+            transition="fade-transition"
+          ></v-carousel-item>
+        </v-carousel>
+        
+        <v-row>
+          <v-col cols="12" md="4">
+            <!-- ##### DETAIL CARD ##### -->
+            <v-card class="px-4 pt-4 pb-1 mb-n3">
+              <!-- ##### EVENT TITLE ##### -->
+              <h2 class="px-2 pt-1 mb-2">
+                {{ event.name }}
+              </h2>
+              <!-- ##### EVENT CREATOR EMAIL DISPLAY ##### -->
+              <p class="px-2 pb-1 mt-n3"> 
+                <i>{{event.email}}</i>
+              </p>
+              <!-- ##### EVENT DATE ##### -->
+              <p class="px-2 pb-1">
+                {{ event.startDate | formatDate }}
+              </p>
+              
+              <!-- ##### EVENT START AND END TIME ##### -->
+              <p class="px-2 pb-1">
+                {{ event.startDate | formatTime }} -
+                {{ event.endDate | formatTime }}
+              </p>
+            </v-card>
+          </v-col>
+        
+          <v-col class="pt-4" cols="12" md="8">
+            <!-- ##### EVENT TITLE ##### -->
+            <h2 class="px-2 pt-1">
+              {{ event.name }}
+            </h2>
+            
+            <!-- ##### EVENT DESCRIPTION ##### -->
+            <p class="px-2 pb-1">
+              {{ event.description }}
+            </p>
+          </v-col>
+        </v-row>
+        
+        
 
         <!-- ##### DELETE EVENT BUTTON ##### -->
         <!-- 
@@ -53,6 +78,12 @@ export default {
   name: "Event",
   data: () => ({
     event: {},
+    items: [
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',},
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',},
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',},
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',},
+    ],
   }),
   created() {
     try{

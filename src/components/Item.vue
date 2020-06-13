@@ -1,6 +1,18 @@
 <template>
   <v-container>
     <v-card class="px-4 pt-4 pb-5">
+
+        <!-- ##### CAROUSEL ##### -->
+        <v-carousel class="pt-4 mb-4">
+          <v-carousel-item
+            v-for="(item,i) in items"
+            :key="i"
+            :src="item.src"
+            reverse-transition="fade-transition"
+            transition="fade-transition"
+          ></v-carousel-item>
+        </v-carousel>
+
       <!-- ##### ITEM INFORMATION ##### -->
       <v-card class="px-4 mb-4 py-1">
 
@@ -139,11 +151,12 @@ export default {
     estimatedFreightCost: 0,
     radio: "south",
     bid: "",
-    // //bids: [],
-    // bidRules: [
-    //   bid => !!bid || "required",
-    //   bid => bid > 0 || "positive values only",
-    // ],
+    items: [
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',},
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',},
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',},
+      {src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',},
+    ],
       page: 1,
       perPage: 10
   }),
@@ -182,7 +195,9 @@ export default {
       }
     },
     async submitBid(){
-      if(this.bid > this.$store.state.itemBids[0].bid && this.bid != null && this.bid < 1000000){
+      
+      if(this.$store.state.itemBids.length == 0) {
+        
         try{
           let bid = {
             itemID: this.item.id,
@@ -199,8 +214,28 @@ export default {
         }
       }
       else {
-        alert("Error ITE005: The details of your bid cannot be processed.");
-      }
+        
+        if(parseInt(this.bid) > parseInt(this.$store.state.itemBids[0].bid) && this.bid != null && this.bid < 1000000){
+         
+         try{
+            let bid = {
+              itemID: this.item.id,
+              bid: this.bid
+            }
+            await this.$store.dispatch("postBid", bid);
+            alert("Bid has been successfully placed.");
+            await this.$store.dispatch("getBids", this.item.id);   
+            this.bid = null;    
+          }
+          catch(ex) {
+            console.log("Error ITE004: " + ex.message);
+            alert("Error ITE004: The system was unable to place a bid on this item.");
+          }
+        }
+        else {
+          alert("Error ITE005: The details of your bid cannot be processed.");
+        }
+      }     
     },
     calculateFreightCost() {
       const item = this.item;
