@@ -84,7 +84,7 @@
             
 
             <!-- ##### BID INPUT ##### -->
-            <v-text-field class="px-2 mt-3" :rules="bidRules" prefix="$" v-model="bid" single-line type="number" />
+            <v-text-field class="px-2 mt-3" onkeydown="return event.keyCode !== 69" prefix="$" v-model="bid" single-line type="number" />
             
             <!-- ##### SUBMIT BID BUTTON ##### -->
             <div class="px-2 pb-4">
@@ -95,7 +95,7 @@
         </div>
 
         <!-- If no account logged in. -->
-        <div class="px-2 my-3">
+        <div v-if="this.$store.state.account == null" class="px-2 my-3">
           <b>You must be logged in to place a bid on this item.</b>
         </div>
 
@@ -139,11 +139,11 @@ export default {
     estimatedFreightCost: 0,
     radio: "south",
     bid: "",
-    bids: [],
-    bidRules: [
-      bid => !!bid || "required",
-      bid => bid > 0 || "positive values only"
-    ],
+    // //bids: [],
+    // bidRules: [
+    //   bid => !!bid || "required",
+    //   bid => bid > 0 || "positive values only",
+    // ],
       page: 1,
       perPage: 10
   }),
@@ -157,13 +157,13 @@ export default {
       alert("Error ITE001: The system was unable to get item information.");
     }
 
-    // Update the stores itemBids
+    //Update the stores itemBids
     try {
       this.$store.dispatch("getBids", this.item.id);
     }
     catch(ex) {
       console.log("Error ITE002: " + ex.message);
-      alert("Error ITE002: The system was unable to bidding information.");
+      alert("Error ITE002: The system was unable to get bidding information.");
     }
   },
   mounted(){
@@ -182,18 +182,24 @@ export default {
       }
     },
     async submitBid(){
-      try{
-        let bid = {
-          itemID: this.item.id,
-          bid: this.bid
+      if(this.bid > this.$store.state.itemBids[0].bid && this.bid != null && this.bid < 1000000){
+        try{
+          let bid = {
+            itemID: this.item.id,
+            bid: this.bid
+          }
+          await this.$store.dispatch("postBid", bid);
+          alert("Bid has been successfully placed.");
+          await this.$store.dispatch("getBids", this.item.id);   
+          this.bid = null;    
         }
-        await this.$store.dispatch("postBid", bid);
-        alert("Bid has been successfully placed.");
-        await this.$store.dispatch("getBids", this.item.id);       
+        catch(ex) {
+          console.log("Error ITE004: " + ex.message);
+          alert("Error ITE004: The system was unable to place a bid on this item.");
+        }
       }
-      catch(ex) {
-        console.log("Error ITE004: " + ex.message);
-        alert("Error ITE004: The system was unable to place a bid on this item.");
+      else {
+        alert("Error ITE005: The details of your bid cannot be processed.");
       }
     },
     calculateFreightCost() {

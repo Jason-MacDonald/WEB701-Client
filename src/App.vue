@@ -74,6 +74,8 @@ export default {
   created() {
     if (localStorage.getItem("jwt") != "null") {
       this.loggedIn = true;
+      this.$store.dispatch("getAccount");
+      this.$router.push("home");
       console.log(localStorage.getItem("jwt"));
     } else {
       this.loggedIn = false;

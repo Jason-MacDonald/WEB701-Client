@@ -85,35 +85,45 @@ export default {
     // ##### ACCOUNT METHODS #####
     updateUserName() {
       // TODO: can do without all this....
-      let account = {
-        id: this.account.id,
-        name: this.account.name,
-        email: this.account.email
-      };
+      if(this.account.name.length < 40){
+        let account = {
+          id: this.account.id,
+          name: this.account.name,
+          email: this.account.email
+        };
 
-      try{
-        this.$store.dispatch("putAccount", account);
-        alert("Your account has been updated successfully.");
+        try{
+          this.$store.dispatch("putAccount", account);
+          alert("Your username has been updated successfully.");
+        }
+        catch(ex) {
+          console.log("Error ACC003: " + ex.message);
+          alert("Error ACC003: The system was unable to update your account.");
+        } 
       }
-      catch(ex) {
-        console.log("Error ACC003: " + ex.message);
-        alert("Error ACC003: The system was unable to update your account.");
-      } 
+      else {
+        alert("Error ACC004: The system was unable to update your account. Your username must be under 40 characters in length.");
+      }
     },
     // ##### MEMBER METHODS #####
     updateMemberDescription() {
-      let member = {
-        name: this.member.name,
-        description: this.member.description
-      };
+      if(this.member.description.length < 255) {
+        let member = {
+          name: this.member.name,
+          description: this.member.description
+        };
 
-      try{
-        this.$store.dispatch("putMember", member);
-        alert("Your member details have been successfully updated.");
+        try{
+          this.$store.dispatch("putMember", member);
+          alert("Your member details have been successfully updated.");
+        }
+        catch(ex) {
+          console.log("Error ACC005: " + ex.message);
+          alert("Error ACC005: The system was unable to update your member details.");
+        }
       }
-      catch(ex) {
-        console.log("Error ACC004: " + ex.message);
-        alert("Error ACC004: The system was unable to update your member details.");
+      else {
+        alert("Error ACC006: The system was unable to update your member details. Your description must be under 255 characters in length.");
       }
     }
   }
