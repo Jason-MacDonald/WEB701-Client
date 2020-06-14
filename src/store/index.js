@@ -70,19 +70,13 @@ export default new Vuex.Store({
     },
     async getAccount({ commit }) {
       const endpoint = await axios.get(
-        "https://webdev.talos.net.nz/web701_sj/server/api/users/account",
-        {
-          headers: { authorization: localStorage.getItem("jwt") },
-        }
+        "https://webdev.talos.net.nz/web701_sj/server/api/users/account",{ headers: { authorization: localStorage.getItem("jwt") }, }
       );
       commit("setAccountDetails", endpoint.data);
     },
     async getMember({ commit }) {
       const endpoint = await axios.get(
-        "https://webdev.talos.net.nz/web701_sj/server/api/member",
-        {
-          headers: { authorization: localStorage.getItem("jwt") },
-        }
+        "https://webdev.talos.net.nz/web701_sj/server/api/member", { headers: { authorization: localStorage.getItem("jwt") }, }
       );
       commit("setMemberDetails", endpoint.data);
     },

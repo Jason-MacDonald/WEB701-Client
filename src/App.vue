@@ -1,6 +1,7 @@
 <template>
   <v-app>
 
+    <!-- ##### NAVIGATION DRAWER ##### -->
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list nav dense>
         <v-list-item-group active-class="deep-purple--text text--accent-4">
@@ -49,8 +50,7 @@
       </v-list>
     </v-navigation-drawer>
 
-
-
+    <!-- ##### APP BAR ##### -->
     <v-app-bar app color="white">
       <v-app-bar-nav-icon class="ml-2" @click="drawer = true"></v-app-bar-nav-icon>
 
@@ -92,15 +92,37 @@
       </div>
 
     </v-app-bar>
-
-    
-    
+ 
+    <!-- #### ROUTED VIEW ##### -->
     <div class="mt-10">
       <router-view class="mt-10"/>
     </div>
 
+    <!-- ##### DEVELOPMENT PANEL ##### for assistance during development. -->
+    <v-card class="px-4 pt-4 pb-3 mt-4 mb-4">
+      <div class="mt-2">
+        <h2>Development Panel</h2>
+        <div class="d-flex justify-center" :v-if="buttonEnabled == true">
+
+          <v-btn @click="subscription">
+            {{pushButtonText}}
+          </v-btn>
+
+          <v-btn @click="triggerPush">
+            Get Subscriptions
+          </v-btn>
+
+        </div>
+      </div>
+    </v-card>
+
     <!-- ##### FOOTER ##### -->
-    <v-footer>
+    <!-- 
+      .absolute places the footer at the bottom of the visible window as a minimum 
+      br's are temporary positioning fix.
+    -->
+    <br/><br/><br/><br/><br/> 
+    <v-footer absolute padless> 
       <v-card
         flat
         tile
@@ -121,24 +143,6 @@
       </v-card>
     </v-footer>
 
-    <v-card class="px-4 pt-4 pb-3">
-      <div class="mt-2">
-        <h2>Development Panel</h2>
-        <div class="d-flex justify-center" :v-if="buttonEnabled == true">
-
-          <v-btn @click="subscription">
-            {{pushButtonText}}
-          </v-btn>
-
-          <v-btn @click="triggerPush">
-            Get Subscriptions
-          </v-btn>
-
-        </div>
-      </div>
-    </v-card>
-
-
   </v-app>
 </template>
 
@@ -149,37 +153,34 @@ export default {
     loggedIn: false,
     drawer: false,
 
+    // Push notification related variables.
     swRegistration: "",
     pushButtonText: "Push Messaging Not Available",
     buttonEnabled: false,
     isSubscribed: false
   }),
   created() {
-    if (localStorage.getItem("jwt") != "null") {
+    if (localStorage.getItem("jwt") != "null") { // Ensures user is login is updated on created and on refresh.
       this.loggedIn = true;
-      this.$store.dispatch("getAccount");
-      this.$router.push("home");
+      this.$store.dispatch("getAccount"); // Sets the store account to the logged in account after jwt authentication.
+
+      if(this.$route.path != "/home") 
+        this.$router.push("/home"); // Navigate to home if not already at home. (For refresh)
+
       console.log(localStorage.getItem("jwt"));
     } else {
       this.loggedIn = false;
       console.log(localStorage.getItem("jwt"));
-    }
-
-    
+    } 
   },
   methods: {
-    logout() {
+    logout() { // Removes any account information from store and local storage.
       this.$store.commit("setToken", null);
       this.$store.commit("clearAccount", null);
       this.$router.push("/login");
       var storage = window.localStorage;
       storage.clear();
-    },
-
-
-
-
-    
+    },   
     subscription (){
       if(this.isSubscribed){
         alert("unsubscribing");
@@ -296,7 +297,7 @@ export default {
     },
   },
   
-  mounted() { 
+  mounted() {
       this.serviceWorker();
   },
 };

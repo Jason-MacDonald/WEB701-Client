@@ -7,7 +7,7 @@ import moment from "moment";
 
 Vue.config.productionTip = false;
 
-// ##### GLOBAL TIME DATE FILTERS #####
+// ##### GLOBAL TIME AND DATE FILTERS #####
 Vue.filter("formatDate", function(value) {
   if (value) {
     return moment(String(value)).format("DD MMMM YYYY");
@@ -21,7 +21,6 @@ Vue.filter("formatTime", function(value) {
       .format("h:mma");
   }
 });
-
 
 new Vue({
   router,
