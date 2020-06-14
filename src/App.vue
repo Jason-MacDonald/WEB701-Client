@@ -251,7 +251,7 @@ export default {
           console.log('Service Worker is registered', swReg);
 
           _this.swRegistration = swReg;
-          initializeUI();
+          _this.initializeUI(_this);
         })
         .catch(function(error) {
           console.error('Service Worker Error', error);
@@ -260,25 +260,24 @@ export default {
         console.warn('Push messaging is not supported');
         _this.pushButtonText = 'Push Not Supported';
       }
-
-      function initializeUI() {
+    },
+    initializeUI(_this) {
         // Set the initial subscription value
-        _this.swRegistration.pushManager.getSubscription()
-        .then(function(subscription) {
-          _this.isSubscribed = !(subscription === null);
+      _this.swRegistration.pushManager.getSubscription()
+      .then(function(subscription) {
+        _this.isSubscribed = !(subscription === null);
 
-          if (_this.isSubscribed) {
-            _this.buttonEnabled = true;
-            console.log('User IS subscribed!');
-            _this.pushButtonText = 'Disable Push Messaging';
-            _this.subscribed = true;
-          } else {
-            console.log('User is NOT subscribed!');
-            _this.pushButtonText = 'Enable Push Messaging';
-            _this.subscribed = false;
-          }
-        });
-      }
+        if (_this.isSubscribed) {
+          _this.buttonEnabled = true;
+          console.log('User IS subscribed!');
+          _this.pushButtonText = 'Disable Push Messaging';
+          _this.subscribed = true;
+        } else {
+          console.log('User is NOT subscribed!');
+          _this.pushButtonText = 'Enable Push Messaging';
+          _this.subscribed = false;
+        }
+      })
     },
     urlB64ToUint8Array(base64String) {
       const padding = '='.repeat((4 - base64String.length % 4) % 4);

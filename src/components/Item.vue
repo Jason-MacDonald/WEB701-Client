@@ -191,7 +191,7 @@ export default {
     submitBid(){ // Performs validation on new bid. 
       if(this.$store.state.itemBids.length == 0) { 
         // Places a bid if the item currently has no bids.      
-        this.PlaceBid();
+        this.placeBid();
       }
       else {       
         if(parseInt(this.bid) > parseInt(this.$store.state.itemBids[0].bid) && this.bid != null && this.bid < 1000000){  
