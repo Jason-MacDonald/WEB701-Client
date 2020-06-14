@@ -1,5 +1,6 @@
 <template>
   <v-container>
+
     <v-card >
       <div class="pt-4 d-flex flex-wrap justify-center">
         <!-- ##### GALLERY OF MEMBERS ##### -->
@@ -38,26 +39,29 @@
           </div>
         </div>
       </div>
+
       <!-- ##### PAGINATION #####  -->
       <div class="text-center">
+        <!-- Rounds up pages to display remainder (if any) on final page -->
         <v-pagination class="pb-3" v-model="page" total-visible="10" :length="Math.ceil(this.$store.state.members.length / perPage)" />
         <br/>
       </div>
 
     </v-card>
+
   </v-container>
 </template>
 
 <script>
 export default {
   name: "Members",
-  data() {
+  data() { // Pagination variables.
     return {
       page: 1,
       perPage: 8,
     }
   },
-  created() {
+  created() { // Updates store member list on created.
     try{
       this.$store.dispatch("getMembers");
     }
@@ -67,10 +71,10 @@ export default {
     }
   },
   methods: {
-    setSelectedMemberIndex(index) {
+    async setSelectedMemberIndex(index) { // Updates the stores selecet member and navigates to the chosen Member page.
       try{
-        this.$store.dispatch("selectMember", index);
-        this.$router.push("/member"); 
+        await this.$store.dispatch("selectMember", index); // Updates the selected members index in the store.
+        this.$router.push("/member"); // Navigates to the member page.
       }
       catch(ex) {
         console.log("Error MES002: " + ex.message);

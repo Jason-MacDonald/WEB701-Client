@@ -1,5 +1,6 @@
 <template>
   <v-container>
+
     <v-card class="px-4 py-4">
       <v-card class="px-4 pb-1">
 
@@ -26,14 +27,16 @@
         
       </v-card>
     </v-card>
+
   </v-container>
 </template>
 
 <script>
 export default {
   name: "Member",
-  data: () => ({
+  data: () => ({ // Local copy of Member data. (Also includes images for prototyping)
     member: {},
+    // Prototype image sources.
     items: [
       {src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',},
       {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',},
@@ -41,7 +44,7 @@ export default {
       {src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',},
     ],
   }),
-  created() {
+  created() { // Retreives and sets local member to store's selected member.
     try{
       this.member = this.$store.state.members[this.$store.state.selectedMemberIndex];
     }

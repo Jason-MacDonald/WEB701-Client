@@ -52,13 +52,13 @@
 <script>
 export default {
   name: "Items",
-  data() {
-    return {
+  data() { // Pagination variables.
+    return { 
       page: 1,
       perPage: 6
     }
   },
-  created() {
+  created() { // Ensures store Items is up do date on created.
     try{
       this.$store.dispatch("getItems");
     }
@@ -69,10 +69,10 @@ export default {
     
   },
   methods: {
-    setSelectedItemIndex(index) {
+    async setSelectedItemIndex(index) { // Sets selected item in store and navigates to Item page.
       try{
-        this.$store.dispatch("selectItem", index);
-        this.$router.push("/item"); 
+        await this.$store.dispatch("selectItem", index); // Sets selected item in store.
+        this.$router.push("/item"); // Navigates to Item page.
       }
       catch(ex) {
         console.log("Error EVS002: " + ex.message);

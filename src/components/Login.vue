@@ -1,5 +1,6 @@
 <template>
   <v-container>
+
     <v-card class="px-4 pt-4">
       <!-- ##### LOGIN FORM ##### -->
       <v-form>
@@ -28,21 +29,22 @@
             Login
           </v-btn>
 
-          <!-- ##### LINK TO REGISTER ##### -->
+          <!-- ##### LINK TO REGISTER ACCOUNT ##### -->
           <router-link class="mx-3" style="text-decoration: none;" to="/register">
             Create new account
           </router-link>
-
         </div>
+
       </v-form>
     </v-card>
+
   </v-container>
 </template>
 
 <script>
 export default {
   name: "Login",
-  data: () => ({
+  data: () => ({ // Details and rules for login functionality.
     password: "",
     passwordRules: [
       password => !!password || "Password is required",
@@ -55,15 +57,17 @@ export default {
     ]
   }),
   methods: {
-    async login() {
-      var user = {
+    // Login will assign store account and store jwt token in local storage.
+    // TODO: Find more secure system for storage of jwt information.
+    async login() { // Logs user in to their account and navigates to their account page.
+      var user = { // Creates a user object to sign in to account.
         email: this.email,
         password: this.password
       };
 
       try{
-        await this.$store.dispatch("login", user);
-        this.$router.push("/account");
+        await this.$store.dispatch("login", user); // Logs user into account. Sets store account and jwt into local storage.
+        this.$router.push("/account"); // Navigate to account page.
       }
       catch(ex) {
         console.log("Error LOG002: " + ex.message);

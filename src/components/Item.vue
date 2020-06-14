@@ -219,7 +219,8 @@ export default {
             alert("Error ITE004: The system was unable to place a bid on this item.");
           }
     },
-    calculateFreightCost() {
+    // A better system should be developed to manage costs externally from the application. i.e. a database record of costs.
+    calculateFreightCost() { // Calculates the freight cost based on local values.
       const item = this.item;
       let estimatedFreightCost = 0;
 
