@@ -7,8 +7,7 @@
       <!-- ##### GALLERY OF EVENTS ##### -->    
         <div v-for="(event, index) in this.$store.state.events" :key="index">
           <!-- Pagination calculation -->
-          <div v-if="index < page * perPage && index >= page * perPage - perPage">
-           
+          <div v-if="index < page * perPage && index >= page * perPage - perPage">         
             <v-card class="px-4 mb-4 py-1 pt-3 mx-4 d-flex flex-column" width="330px" height="430">
               <v-img
               src="https://picsum.photos/230/165?random"
@@ -16,7 +15,7 @@
               height="165"
               max-height="165"
               class="grey darken-4"
-            ></v-img>
+              ></v-img>
 
               <!-- ##### EVENT TITLE ##### -->
               <h2 class="px-2 pt-1">
@@ -40,8 +39,6 @@
               <p class="px-2 pb-1">
                 {{ event.startDate | formatTime }} - {{ event.endDate | formatTime }}
               </p>
-
-              
 
               <!-- ##### SEE MORE BUTTON ##### -->
               <div class="px-2 pb-4">
@@ -67,13 +64,11 @@
 <script>
 export default {
   name: "Events",
-    data() {
-    return {
-      page: 1,
-      perPage: 8
-    }
-  },
-  created() {
+  data: () => ({ // Holds data for pagination. 
+    page: 1,
+    perPage: 8
+  }),
+  created() { // Updates the store event array from the database on created.
     try{
       this.$store.dispatch("getEvents");    
     }
@@ -83,10 +78,10 @@ export default {
     }  
   },
   methods: {
-    setSelectedEventIndex(index) {
+    setSelectedEventIndex(index) { // Sets stores selected event index and navigates to the event page.
       try{
-        this.$store.dispatch("selectEvent", index);    
-        this.$router.push("/event");
+        this.$store.dispatch("selectEvent", index); // Updates the store selected Event index to the selected Events index.    
+        this.$router.push("/event"); // Navigates to event.
       }
       catch(ex) {
         console.log("Error EVS002: " + ex.message);

@@ -1,8 +1,9 @@
 <template>
   <v-container>
+
     <v-card class="px-4 py-4">
 
-      <!-- ##### ACCOUNT DETAILS ##### -->
+      <!-- ########## ACCOUNT DETAILS ########## -->
       <v-card class="px-4 pt-4 pb-1">
         
         <!-- ##### ACCOUNT TITLE #####  -->
@@ -25,7 +26,7 @@
         
       </v-card>
 
-      <!-- ##### MEMBER DETAILS ##### -->
+      <!-- ########## MEMBER DETAILS ########## -->
       <div v-if="account.type == 'Member'"> 
         <v-card class="px-4 pt-4 pb-1 mt-5">
         
@@ -46,22 +47,24 @@
           
         </v-card>
       </div>
+
     </v-card>
+
   </v-container>
 </template>
 
 <script>
 export default {
   name: "Account",
-  data: () => ({
+  data: () => ({ // Holds local copy of Account and Member details.
     account: {},
     member: {
       name: 'no name',
       description: 'no description'
     } 
   }),
-  async created() {
-    try{
+  async created() { // Updates store Account and Member and assigns to local variable on created.
+    try{ // Update and assign Account.
       await this.$store.dispatch("getAccount");
       this.account = this.$store.state.account;
     }
@@ -70,6 +73,7 @@ export default {
       alert("Error ACC001: The system was unable to get account information.");
     }  
 
+    // Update and assign Member.
     if(this.account.type == "Member"){
       try{
         await this.$store.dispatch("getMember");
@@ -83,13 +87,12 @@ export default {
   },
   methods: {
     // ##### ACCOUNT METHODS #####
-    updateUserName() {
-      // TODO: can do without all this....
+    updateUserName() { // Sends account object with new details (username) to the store to be updated in the database.
       if(this.account.name.length < 40){
         let account = {
           id: this.account.id,
           name: this.account.name,
-          email: this.account.email
+          email: this.account.email // TODO: Use jwt authentication for account information.
         };
 
         try{
@@ -106,9 +109,9 @@ export default {
       }
     },
     // ##### MEMBER METHODS #####
-    updateMemberDescription() {
+    updateMemberDescription() { // Sends member object to the store to be updated in the database.
       if(this.member.description.length < 255) {
-        let member = {
+        let member = { // Creates newmember object to be updated in the database.
           name: this.member.name,
           description: this.member.description
         };

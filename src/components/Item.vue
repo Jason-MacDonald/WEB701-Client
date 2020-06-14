@@ -2,18 +2,18 @@
   <v-container>
     <v-card class="px-4 pb-5">
 
-        <!-- ##### CAROUSEL ##### -->
-        <v-carousel class="pt-4 mb-4">
-          <v-carousel-item
-            v-for="(item,i) in items"
-            :key="i"
-            :src="item.src"
-            reverse-transition="fade-transition"
-            transition="fade-transition"
-          ></v-carousel-item>
-        </v-carousel>
+      <!-- ##### CAROUSEL ##### -->
+      <v-carousel class="pt-4 mb-4">
+        <v-carousel-item
+          v-for="(item,i) in items"
+          :key="i"
+          :src="item.src"
+          reverse-transition="fade-transition"
+          transition="fade-transition"
+        ></v-carousel-item>
+      </v-carousel>
 
-      <!-- ##### ITEM INFORMATION ##### -->
+      <!-- ########## ITEM INFORMATION ########## -->
       <v-card class="px-4 mb-4 py-1">
 
         <!-- ##### ITEM TITLE ##### -->
@@ -50,6 +50,8 @@
           <b>Estimated Freight: </b> <span class="ml-2">{{"$" + estimatedFreightCost}}</span> 
           
         </div>
+
+        <!-- ##### DELEVERY LOCATION RADIO BUTTONS ##### -->
         <v-radio-group class="mt-n4" v-model="radio" row @change="calculateFreightCost">   
                   
             <v-radio class="ml-1" label="South Island" value="south" />
@@ -58,7 +60,7 @@
           </v-radio-group>
       </v-card>
 
-      <!-- ##### BIDDING FORM ##### -->
+      <!-- ########## BIDDING FORM ########## -->
       <!-- If account is logged in. -->
       <v-card class="px-4 mb-4 py-1">
         <div v-if="this.$store.state.account != null">
@@ -68,16 +70,17 @@
             <h2 class="px-2 mt-3">Place Bid:</h2>
             
             <!-- ##### BID INFORMATION ##### -->
-            <p class="px-2 mt-3">            
+            <p class="px-2 mt-3">    
+
               <!-- ##### LEADING BID ##### -->
               <b>Leading Bid:</b>
 
-                <!-- IF THERE ARE BIDS: -->
+                <!-- If there are bids on the item: -->
                 <span v-if="this.$store.state.itemBids.length > 0">
                   {{this.$store.state.itemBids[0].bid}}
                 </span>
 
-                <!-- IF THERE ARE NO BIDS: -->
+                <!-- If there are no bids on the item: -->
                 <span v-else>
                   {{" No current bids."}}
                 </span>
@@ -95,7 +98,7 @@
           </v-form>
         </div>
 
-        <!-- If no account logged in. -->
+        <!-- If no account is logged in. -->
         <div v-if="this.$store.state.account == null" class="px-2 my-3">
           <b>You must be logged in to place a bid on this item.</b>
         </div>
@@ -122,6 +125,7 @@
 
           <!-- ##### PAGINATION #####  -->
           <div class="text-center mt-3">
+            <!-- Round up to ensure enough pages are available to display the remainder of items. -->
             <v-pagination v-model="page" total-visible="10" :length="Math.ceil(this.$store.state.itemBids.length / perPage)" />
           </div>
 
@@ -129,6 +133,7 @@
       </div>
 
     </v-card> 
+
   </v-container>
 </template>
 
@@ -168,8 +173,8 @@ export default {
       alert("Error ITE002: The system was unable to get bidding information.");
     }
   },
-  mounted(){
-    this.calculateFreightCost();
+  mounted(){ // Calculates the initial freight cost for this item. Can be adjusted using location radio buttons.
+    this.calculateFreightCost(); 
   },
   methods: {
     deactivateItem() { 
@@ -183,48 +188,36 @@ export default {
         alert("Error ITE003: The system was unable to delete the item.");
       }
     },
-    async submitBid(){
-      
-      if(this.$store.state.itemBids.length == 0) {
-        
-        try{
-          let bid = {
-            itemID: this.item.id,
-            bid: this.bid
-          }
-          await this.$store.dispatch("postBid", bid);
-          alert("Bid has been successfully placed.");
-          await this.$store.dispatch("getBids", this.item.id);   
-          this.bid = null;    
-        }
-        catch(ex) {
-          console.log("Error ITE004: " + ex.message);
-          alert("Error ITE004: The system was unable to place a bid on this item.");
-        }
+    submitBid(){ // Performs validation on new bid. 
+      if(this.$store.state.itemBids.length == 0) { 
+        // Places a bid if the item currently has no bids.      
+        this.PlaceBid();
       }
-      else {
-        
-        if(parseInt(this.bid) > parseInt(this.$store.state.itemBids[0].bid) && this.bid != null && this.bid < 1000000){
-         
-         try{
-            let bid = {
-              itemID: this.item.id,
-              bid: this.bid
-            }
-            await this.$store.dispatch("postBid", bid);
-            alert("Bid has been successfully placed.");
-            await this.$store.dispatch("getBids", this.item.id);   
-            this.bid = null;    
-          }
-          catch(ex) {
-            console.log("Error ITE004: " + ex.message);
-            alert("Error ITE004: The system was unable to place a bid on this item.");
-          }
+      else {       
+        if(parseInt(this.bid) > parseInt(this.$store.state.itemBids[0].bid) && this.bid != null && this.bid < 1000000){  
+          // Places a bid if it is higher than previous bid.       
+          this.placeBid();
         }
         else {
           alert("Error ITE005: The details of your bid cannot be processed.");
         }
       }     
+    },
+    async placeBid() { // Sends new bid to store to be inserted into the database.
+      try{
+            let bid = { // Creates a new Bid object to insert into database.
+              itemID: this.item.id,
+              bid: this.bid
+            }
+            await this.$store.dispatch("postBid", bid); // Inserts new bid into database.
+            alert("Bid has been successfully placed.");
+            await this.$store.dispatch("getBids", this.item.id); // Refreshes store bids to include new bid.
+            this.bid = null; // Empties the bid form.    
+          }
+          catch(ex) {
+            console.log("Error ITE004: " + ex.message);
+            alert("Error ITE004: The system was unable to place a bid on this item.");
+          }
     },
     calculateFreightCost() {
       const item = this.item;

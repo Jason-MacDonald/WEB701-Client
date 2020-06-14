@@ -15,17 +15,20 @@
         </v-carousel>
         
         <v-row>
-          <v-col cols="12" md="4">
-            <!-- ##### DETAIL CARD ##### -->
+          <!-- ##### DETAIL CARD ##### -->
+          <v-col cols="12" md="4">           
             <v-card class="px-4 pt-4 pb-1 mb-n3">
+
               <!-- ##### EVENT TITLE ##### -->
               <h2 class="px-2 pt-1 mb-2">
                 {{ event.name }}
               </h2>
+
               <!-- ##### EVENT CREATOR EMAIL DISPLAY ##### -->
               <p class="px-2 pb-1 mt-n3"> 
                 <i>{{event.email}}</i>
               </p>
+
               <!-- ##### EVENT DATE ##### -->
               <p class="px-2 pb-1">
                 {{ event.startDate | formatDate }}
@@ -36,10 +39,13 @@
                 {{ event.startDate | formatTime }} -
                 {{ event.endDate | formatTime }}
               </p>
+
             </v-card>
           </v-col>
         
+          <!-- ##### EVENT INFORMATION ##### -->
           <v-col class="pt-4" cols="12" md="8">
+
             <!-- ##### EVENT TITLE ##### -->
             <h2 class="px-2 pt-1">
               {{ event.name }}
@@ -49,11 +55,10 @@
             <p class="px-2 pb-1">
               {{ event.description }}
             </p>
+
           </v-col>
         </v-row>
         
-        
-
         <!-- ##### DELETE EVENT BUTTON ##### -->
         <!-- 
           Only displayed if the current account email is the same as the event creators email.
@@ -61,15 +66,19 @@
         <div class="px-2 pb-4">
           <div v-if="this.$store.state.account != null">
             <div v-if="this.$store.state.account.email == this.$store.state.events[this.$store.state.selectedItemIndex].email">
-              <v-btn @click="deleteEvent()">
+
+              <v-btn color="primary" @click="deleteEvent()">
                 Delete Event
-                </v-btn>
+              </v-btn>
+
             </div>
           </div>
         </div>
         
       </v-card>
+
     </v-card>
+
   </v-container>
 </template>
 
@@ -77,17 +86,17 @@
 export default {
   name: "Event",
   data: () => ({
-    event: {},
-    items: [
+    event: {}, // Local copy of single Event.
+    items: [ // Prototype image sources.
       {src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',},
       {src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',},
       {src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',},
       {src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',},
     ],
   }),
-  created() {
+  created() { // Assign local copy of event to currently selected event from the store on created.
     try{
-      this.event = this.$store.state.events[this.$store.state.selectedItemIndex];
+      this.event = this.$store.state.events[this.$store.state.selectedEventIndex];
     }
     catch(ex){
       console.log("Error EVE001: " + ex.message);
@@ -95,10 +104,10 @@ export default {
     }
   },
   methods: {
-    deleteEvent() {
-      try{
-        this.$store.dispatch("deleteEvent", this.event.id);
-        this.$router.push("/events");
+    async deleteEvent() { // Deletes the current event from the database.
+      try{ 
+        await this.$store.dispatch("deleteEvent", this.event.id); // Deletes event based on event id.
+        this.$router.push("/events"); // Navigates to events.
         alert("The Event has been successfully deleted.");
       }
       catch(ex) {       
