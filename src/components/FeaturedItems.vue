@@ -2,15 +2,9 @@
   <v-container>
 
     <v-card class="px-4 pt-4 pb-3">
-      <div class="mx-3" v-if="this.$store.state.account != null">
-        <div class="pb-4" v-if="this.$store.state.account.type == 'Member'">
-          <v-btn block color="primary" to="/new-item">Add Item</v-btn>
-        </div>
-      </div>
-
+        <h1 class="text-center pb-4">Items</h1>
       <div class="d-flex flex-wrap justify-center">
         <!-- ##### GALLERY OF ITEMS ##### -->
-
         <div v-for="(item, index) in this.$store.state.items" :key="index">
           <!-- Pagination calculation -->
           <div v-if="index < page * perPage && index >= page * perPage - perPage">
@@ -62,7 +56,7 @@ export default {
   data() { // Pagination variables.
     return { 
       page: 1,
-      perPage: 6
+      perPage: 3
     }
   },
   created() { // Ensures store Items is up do date on created.

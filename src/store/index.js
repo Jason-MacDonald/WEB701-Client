@@ -88,6 +88,9 @@ export default new Vuex.Store({
       let PushSubscription = (JSON.stringify(pushSubscription));
       axios.put("https://webdev.talos.net.nz/web701_sj/server/api/users/account/subscribe", PushSubscription, { headers: { "Content-Type": "application/json", authorization: localStorage.getItem("jwt") }});
     },
+    async removeSubscriptionFromDatabase() {
+      axios.put("https://webdev.talos.net.nz/web701_sj/server/api/users/account/unsubscribe", null, { headers: { "Content-Type": "application/json", authorization: localStorage.getItem("jwt") }});
+    },
     async triggerPush() {
       axios.post("https://webdev.talos.net.nz/web701_sj/server/api/users/trigger-push");
     },

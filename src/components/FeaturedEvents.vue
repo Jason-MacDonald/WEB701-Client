@@ -1,15 +1,8 @@
 <template>
   <v-container>
     <v-card >
+        <h1 class="text-center pt-4">Events</h1>
       <!-- Container to hold gallery of events. -->
-
-      <!-- ##### NEW EVENT NAV BUTTON ##### -->
-      <div class="mx-3" v-if="this.$store.state.account != null">
-        <div class="mx-4 pt-4" v-if="this.$store.state.account.type == 'Member'">
-          <v-btn block color="primary" to="/new-event">Add Event</v-btn>
-        </div>
-      </div>
-
       <div class="px-4 pt-4 pb-3 d-flex flex-wrap justify-center">
 
       <!-- ##### GALLERY OF EVENTS ##### -->    
@@ -74,7 +67,7 @@ export default {
   name: "Events",
   data: () => ({ // Holds data for pagination. 
     page: 1,
-    perPage: 8
+    perPage: 3
   }),
   created() { // Updates the store event array from the database on created.
     try{

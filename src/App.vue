@@ -1,50 +1,68 @@
 <template>
   <v-app>
+    <!-- ##### DEVELOPMENT PANEL ##### for assistance during development. -->
+    <div class="mb-10"/>
+    <v-card class="px-4 pt-4 pb-3 mt-10">
+      <div class="mt-2">
+        <h2>Development Panel</h2>
+        <div class="d-flex justify-center" :v-if="buttonEnabled == true">
+
+          <v-btn @click="subscription">
+            {{pushButtonText}}
+          </v-btn>
+
+          <v-btn class="ml-5" @click="triggerPush">
+            Push Notification
+          </v-btn>
+
+        </div>
+      </div>
+    </v-card>
 
     <!-- ##### NAVIGATION DRAWER ##### -->
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list nav dense>
         <v-list-item-group active-class="deep-purple--text text--accent-4">
 
-          <v-list-item> 
-            <v-list-item-title>
-              <router-link style="text-decoration: none; color: inherit;" to="/events">
+          <router-link style="text-decoration: none; color: inherit;" to="/events">
+            <v-list-item>                
+              <v-list-item-title>
                 Events
-              </router-link>
-            </v-list-item-title>
-          </v-list-item>
+              </v-list-item-title>       
+            </v-list-item>
+          </router-link> 
 
-          <v-list-item>
-            <v-list-item-title>
-              <router-link style="text-decoration: none; color: inherit;" to="/members">
+          <router-link style="text-decoration: none; color: inherit;" to="/members">
+            <v-list-item>
+              <v-list-item-title>
                 <v-list-item-title>Members</v-list-item-title>
-              </router-link>
-            </v-list-item-title>
-          </v-list-item>
+              </v-list-item-title>
+            </v-list-item>
+          </router-link>
 
-          <v-list-item>
-            <v-list-item-title>
-              <router-link style="text-decoration: none; color: inherit;" to="/items">
+          <router-link style="text-decoration: none; color: inherit;" to="/items">
+            <v-list-item>
+              <v-list-item-title>      
                 <v-list-item-title>Items</v-list-item-title>
-              </router-link>
-            </v-list-item-title>
-          </v-list-item>
+              </v-list-item-title>
+            </v-list-item>
+          </router-link>
 
-          <v-list-item v-if="this.$store.state.token == null">
-            <v-list-item-title>
-              <router-link style="text-decoration: none; color: inherit;" to="/login">
+          <router-link style="text-decoration: none; color: inherit;" to="/login">
+            <v-list-item v-if="this.$store.state.token == null">
+              <v-list-item-title>
                 <v-list-item-title>Login</v-list-item-title>
-              </router-link>
-            </v-list-item-title>
-          </v-list-item>
+              </v-list-item-title>
+            </v-list-item>
+          </router-link>
 
-          <v-list-item v-if="this.$store.state.token != null">
-            <v-list-item-title>
-              <router-link style="text-decoration: none; color: inherit;" to="/account">
-                <v-list-item-title>Account</v-list-item-title>
-              </router-link>
-            </v-list-item-title>
-          </v-list-item>
+          <router-link style="text-decoration: none; color: inherit;" to="/account">
+            <v-list-item v-if="this.$store.state.token != null">
+              <v-list-item-title>
+                <v-list-item-title>Account</v-list-item-title>  
+              </v-list-item-title>
+            </v-list-item>
+          </router-link>
 
         </v-list-item-group>
       </v-list>
@@ -94,34 +112,20 @@
     </v-app-bar>
  
     <!-- #### ROUTED VIEW ##### -->
-    <div class="mt-10">
+    <div class="mt-10 mb-10">
       <router-view class="mt-10"/>
     </div>
+    <div class="mb-10"/>
+    <div class="mb-10"/>
+    <div class="mb-3"/>
 
-    <!-- ##### DEVELOPMENT PANEL ##### for assistance during development. -->
-    <v-card class="px-4 pt-4 pb-3 mt-4 mb-4">
-      <div class="mt-2">
-        <h2>Development Panel</h2>
-        <div class="d-flex justify-center" :v-if="buttonEnabled == true">
 
-          <v-btn @click="subscription">
-            {{pushButtonText}}
-          </v-btn>
-
-          <v-btn @click="triggerPush">
-            Get Subscriptions
-          </v-btn>
-
-        </div>
-      </div>
-    </v-card>
 
     <!-- ##### FOOTER ##### -->
     <!-- 
       .absolute places the footer at the bottom of the visible window as a minimum 
       br's are temporary positioning fix.
-    -->
-    <br/><br/><br/><br/><br/> 
+    --> 
     <v-footer absolute padless> 
       <v-card
         flat
@@ -228,7 +232,8 @@ export default {
         console.log("Error unsubscribing", error);
       })
       .then(function() {
-        _this.updateSubscriptionOnServer(null);
+        _this.$store.dispatch("removeSubscriptionFromDatabase");
+       // _this.updateSubscriptionOnServer();
         console.log("User is unsubscribed");
         _this.isSubscribed = false;
         _this.pushButtonText = 'Enable Push Messaging';

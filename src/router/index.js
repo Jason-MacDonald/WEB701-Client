@@ -27,6 +27,11 @@ const routes = [
     name: "Home",
     component: vHome,
   },
+  {
+    path: "/home",
+    name: "Home",
+    component: vHome,
+  },
   // ##### EVENTS #####
   {
     path: "/events",
