@@ -94,6 +94,9 @@ export default new Vuex.Store({
     async triggerPush() {
       axios.post("https://webdev.talos.net.nz/web701_sj/server/api/users/trigger-push");
     },
+    async triggerPushWithMessage(unused, message) {
+      axios.post("https://webdev.talos.net.nz/web701_sj/server/api/users/trigger-push-with-message", message);
+    },
     // ### GET ALL ###
     async getEvents({ commit }) {
       const endpoint = await axios.get("https://webdev.talos.net.nz/web701_sj/server/api/events");
