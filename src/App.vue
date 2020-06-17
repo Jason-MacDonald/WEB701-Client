@@ -2,31 +2,7 @@
   <v-app>
     <!-- ##### DEVELOPMENT PANEL ##### for assistance during development. -->
     <div class="mb-10"/>
-    <v-card class="px-4 pt-4 pb-3 mt-10">
-      <div class="mt-2">
-        <h2>Development Panel</h2>
-        <div :v-if="buttonEnabled == true">
 
-          <v-btn color="warning" class="mt-2 ml-4" @click="subscription">
-            {{pushButtonText}}
-          </v-btn>
-
-          <v-btn color="warning" class="ml-5 mt-2" @click="triggerPush">
-            Push Group Notification
-          </v-btn>
-
-          <v-card width="100%" class="mt-5 mb-2 px-4 pb-4 pt-4">
-            <v-text-field label="Email" v-model="email" />
-            <v-text-field label="Title" v-model="title" />
-            <v-text-field label="Message" v-model="message" />
-            <v-btn color="warning" @click="triggerPushWithMessage">
-              Push Single Notification
-            </v-btn>
-          </v-card>
-
-        </div>
-      </div>
-    </v-card>
 
     <!-- ##### NAVIGATION DRAWER ##### -->
     <v-navigation-drawer v-model="drawer" absolute temporary>
@@ -124,6 +100,33 @@
     <div class="mt-10 mb-10">
       <router-view class="mt-10"/>
     </div>
+
+    <v-card class="px-4 pt-4 pb-3 mb-10">
+      <div class="mt-2">
+        <h2>Development Panel</h2>
+        <div :v-if="buttonEnabled == true">
+
+          <v-btn color="warning" class="mt-2 ml-4" @click="subscription">
+            {{pushButtonText}}
+          </v-btn>
+
+          <v-btn color="warning" class="ml-5 mt-2" @click="triggerPush">
+            Push Group Notification
+          </v-btn>
+
+          <v-card width="100%" class="mt-5 mb-2 px-4 pb-4 pt-4">
+            <v-text-field label="Email" v-model="email" />
+            <v-text-field label="Title" v-model="title" />
+            <v-text-field label="Message" v-model="message" />
+            <v-btn color="warning" @click="triggerPushWithMessage">
+              Push Single Notification
+            </v-btn>
+          </v-card>
+
+        </div>
+      </div>
+    </v-card>
+
     <div class="mb-10"/>
     <div class="mb-10"/>
     <div class="mb-3"/>
