@@ -2,11 +2,24 @@
   <v-container>
 
     <v-card class="pa-4">
-      <v-form>
+      <v-form v-model="valid">
 
         <!-- ##### SIMPLE INPUTS ##### -->
-        <v-text-field label="Event Title" v-model="name" />
-        <v-textarea label="Event Description" v-model="description" />
+        <v-text-field 
+          label="Event Title" 
+          v-model="name" 
+          :counter="30"
+          :rules="titleRules"
+          required
+        />
+        
+        <v-textarea 
+          label="Event Description" 
+          v-model="description" 
+          :counter="255"
+          :rules="descriptionRules"
+          required
+        />
 
         <!-- ##### START DATE PICKER ##### -->
         <div>
@@ -20,6 +33,7 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 v-model="startDate"
+                :rules="startDateRules"
                 label="Start Date"
                 prepend-icon="mdi-calendar"
                 readonly
@@ -39,6 +53,7 @@
           <template v-slot:activator="{ on }">
             <v-text-field
               v-model="startTime"
+              :rules="startTimeRules"
               label="Start Time"
               prepend-icon="mdi-clock"
               readonly
@@ -64,6 +79,7 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 v-model="endDate"
+                :rules="endDateRules"
                 label="End Date"
                 prepend-icon="mdi-calendar"
                 readonly
@@ -83,6 +99,7 @@
           <template v-slot:activator="{ on }">
             <v-text-field
               v-model="endTime"
+              :rules="endTimeRules"
               label="End Time"
               prepend-icon="mdi-clock"
               readonly
@@ -97,7 +114,7 @@
         </v-dialog>
 
         <!-- ##### SUBMIT NEW EVENT BUTTON ##### -->
-        <v-btn color="primary" @click="submitNewEvent">
+        <v-btn color="primary" @click="submitNewEvent" :disabled="!valid">
           Submit Event
         </v-btn>
 
@@ -113,6 +130,7 @@ export default {
   data: () => ({ // Models data from inputs.
     name: "",
     description: "",
+    valid: false,
     // Picker variables.
     startDate: null,
     startTime: null,
@@ -121,7 +139,27 @@ export default {
     modalStartDate: false,
     modalStartTime: false,
     modalEndDate: false,
-    modalEndTime: false
+    modalEndTime: false,
+    titleRules: [
+      title => !!title || "A title is required.",
+      title => (title && title.length <= 30) || "Title must not exceed 30 characters"
+    ],
+    descriptionRules: [
+      description => !!description || "A description is required.",
+      description => (description && description.length <= 255) || "Description must not exceed 255 characters"
+    ],
+    startDateRules: [
+      startDate => !!startDate || "A start date is required.",
+    ],
+    startTimeRules: [
+      startTime => !!startTime || "A start time is required.",
+    ],
+    endDateRules: [
+      endDate => !!endDate || "An end date is required.",
+    ],
+    endTimeRules: [
+      endTime => !!endTime || "An end time is required.",
+    ],
   }),
   methods: {
     async submitNewEvent() {

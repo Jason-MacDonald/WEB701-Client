@@ -1,50 +1,79 @@
 <template>
   <v-container>
 
-    <v-card class="px-4 py-4">
+    <v-card class="px-4 py-4"> 
 
-      <!-- ########## ACCOUNT DETAILS ########## -->
       <v-card class="px-4 pt-4 pb-1">
-        
-        <!-- ##### ACCOUNT TITLE #####  -->
-        <h2 class="px-2 pt-1">
-          Account - {{account.type}}
-        </h2>
-        
-        <!-- ##### USERNAME INPUT ##### -->
-        <div class="mt-5">
-          <v-text-field class="px-2 pt-1" label="Username" v-model="account.name" />     
-        </div>
-        
-        <!-- ##### UPDATE USERNAEME BUTTON -->
-        <v-btn color="primary" class="px-2 pt-1" @click="updateUserName">
-            Update Username
-        </v-btn>
+<!-- ########## ACCOUNT DETAILS FORM ########## -->
+        <v-form v-model="valid">
 
-        <!-- ##### EMAIL DISPLAY ###### -->
-        <v-text-field class="px-2 pt-1" disabled v-model="account.email" />
-        
-      </v-card>
-
-      <!-- ########## MEMBER DETAILS ########## -->
-      <div v-if="account.type == 'Member'"> 
-        <v-card class="px-4 pt-4 pb-1 mt-5">
-        
-          <!-- ##### MEMBER DETAILS TITLE #####  -->
+          <!-- ##### ACCOUNT TITLE #####  -->
           <h2 class="px-2 pt-1">
-            Member Details - {{member.name}}
+            Account - {{account.type}}
           </h2>
           
-          <!-- ##### DESCRIPTION INPUT ##### -->
+          <!-- ##### USERNAME INPUT ##### -->
           <div class="mt-5">
-            <v-textarea class="px-2 pt-1" label="description" v-model="member.description" />     
+            <v-text-field 
+              class="px-2 pt-1" 
+              label="Username" 
+              v-model="account.name" 
+              :counter="30"
+              :rules="usernameRules" 
+            />     
           </div>
           
-          <!-- ##### UPDATE USERNAEME BUTTON -->
-          <v-btn color="primary" class="px-2 pt-1 mb-4" @click="updateMemberDescription">
-              Update Description
+          <!-- ##### UPDATE USERNAME BUTTON -->
+          <v-btn 
+            color="primary" 
+            class="px-2 pt-1" 
+            @click="updateUserName" 
+            :disabled="!valid"
+          >
+              Update Username
           </v-btn>
-          
+
+          <!-- ##### EMAIL DISPLAY (Static) ###### -->
+          <v-text-field 
+            class="px-2 pt-1" 
+            disabled 
+            v-model="account.email"
+          />
+
+        </v-form>      
+      </v-card>
+
+      <div v-if="account.type == 'Member'"> 
+        <v-card class="px-4 pt-4 pb-1 mt-5">
+<!-- ########## MEMBER DETAILS FORM ########## -->
+          <v-form v-model="validMemberDesc">
+            <!-- ##### MEMBER DETAILS TITLE #####  -->
+            <h2 class="px-2 pt-1">
+              Member Details - {{member.name}}
+            </h2>
+            
+            <!-- ##### DESCRIPTION INPUT ##### -->
+            <div class="mt-5">
+              <v-textarea 
+                class="px-2 pt-1" 
+                label="description" 
+                v-model="member.description" 
+                :rules="descriptionRules"
+                :counter="255"
+                required
+              />     
+            </div>
+            
+            <!-- ##### UPDATE USERNAEME BUTTON -->
+            <v-btn 
+              color="primary" 
+              class="px-2 pt-1 mb-4" 
+              @click="updateMemberDescription"
+              :disabled="!validMemberDesc"
+            >
+                Update Description
+            </v-btn>
+          </v-form>
         </v-card>
       </div>
 
@@ -61,7 +90,16 @@ export default {
     member: {
       name: 'no name',
       description: 'no description'
-    } 
+    },
+    valid: false,
+    validMemberDesc: false,
+    usernameRules: [
+      username => (username && username.length <= 40) || "Username cannot exceed 40 characters."
+    ], 
+    descriptionRules: [
+      description => !!description || "description is required",
+      description => (description && description.length <= 255) || "Description must not exceed 255 characters"
+    ]
   }),
   async created() { // Updates store Account and Member and assigns to local variable on created.
     try{ // Update and assign Account.

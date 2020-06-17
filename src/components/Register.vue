@@ -3,7 +3,8 @@
 
     <v-card class="px-4 py-4">
       <!-- ##### REGISTRATION FORM ##### -->
-      <v-form>
+      <!-- valid is added to form and will automatically turn true when all imputs pass validation -->
+      <v-form v-model="valid">
 
         <!-- ##### REGISTER TITLE ##### -->
         <h2 class="px-2 pt-1">
@@ -20,12 +21,13 @@
           :counter="40"
           :rules="passwordRules"
           label="Password"
+          type="password"
           required
         ></v-text-field>
         
         <!-- ##### REGISTER BUTTON ##### -->
         <div class="px-2 pb-2">
-          <v-btn @click="register">
+          <v-btn @click="register" :disabled="!valid">
             Create Account
           </v-btn>
         </div>
@@ -40,15 +42,17 @@
 export default {
   name: "Account",
   data: () => ({ // Details and rules for registration functionality.
+    valid: false,
     password: "",
     passwordRules: [
       v => !!v || "Password is required",
-      v => (v && v.length <= 40) || "Name must be less than 40 characters"
+      v => (v && v.length <= 30) || "Email cannot exceed 30 characters."
     ],
     email: "",
     emailRules: [
       v => !!v || "E-mail is required",
-      v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+      v => /.+@.+\..+/.test(v) || "E-mail must be in a valid email format.",
+      v => (v && v.length <= 40) || "Name cannot exceed 40 characters."
     ]
   }),
   methods: {

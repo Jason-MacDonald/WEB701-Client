@@ -38,7 +38,7 @@
         <div class="px-2 pb-4">
           <div v-if="this.$store.state.account != null">
             <div v-if="this.$store.state.account.email == this.$store.state.items[this.$store.state.selectedItemIndex].email">
-              <v-btn @click="deactivateItem()">Delete Item</v-btn>
+              <v-btn color="primary" @click="deactivateItem()">Delete Item</v-btn>
             </div>
           </div>
         </div>
@@ -88,13 +88,18 @@
             
 
             <!-- ##### BID INPUT ##### -->
-            <v-text-field class="px-2 mt-3" onkeydown="return event.keyCode !== 69" prefix="$" v-model="bid" single-line type="number" />
+            <v-text-field 
+              class="px-2 mt-3" 
+              onkeydown="return event.keyCode !== 69" 
+              prefix="$" 
+              v-model="bid" 
+              single-line 
+              type="number" />
             
             <!-- ##### SUBMIT BID BUTTON ##### -->
             <div class="px-2 pb-4">
               <v-btn color="primary" @click="submitBid">Submit Bid</v-btn>
             </div>
-
           </v-form>
         </div>
 
@@ -151,8 +156,8 @@ export default {
       {src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',},
       {src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',},
     ],
-      page: 1,
-      perPage: 10
+    page: 1,
+    perPage: 10,
   }),
   created() {
     // Get the selected item 
